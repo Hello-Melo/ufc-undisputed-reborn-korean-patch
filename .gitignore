@@ -1,0 +1,12 @@
+*.zip
+*.xor.gz
+*.exe
+*.dll
+*.log
+__pycache__/
+data/
+trial/
+evidence/
+diagnostics/
+checkpoints/
+backups/
