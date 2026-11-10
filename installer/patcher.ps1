@@ -67,6 +67,9 @@ function Get-Target($Record) {
         if($addonPaths -notcontains $Record.Path){throw '한글패치 보조 파일 밖의 Xenia 경로입니다.'}
         return (Safe-Path $XeniaPath $Record.Path)
     }
+    if($Record.Scope -eq 'xenia-config' -and $Record.Path -eq 'config/5451087D.config.toml'){
+        return (Safe-Path $XeniaPath $Record.Path)
+    }
     throw '알 수 없는 적용 구분입니다.'
 }
 function Get-Upgrade($File,$Hash) {
@@ -76,10 +79,46 @@ function Get-Upgrade($File,$Hash) {
 }
 function Test-Backup-Transition($File,$Record) {
     if($File.Scope -ne $Record.Scope -or $File.Path -ne $Record.Path){return $false}
-    if($Record.AfterHash -eq $File.AfterHash){
-        return ($Record.BeforeHash -eq $File.BeforeHash -or $null -ne (Get-Upgrade $File $Record.BeforeHash))
+    $beforeKnown=($Record.BeforeHash -eq $File.BeforeHash -or $null -ne (Get-Upgrade $File $Record.BeforeHash))
+    $afterKnown=($Record.AfterHash -eq $File.AfterHash -or $null -ne (Get-Upgrade $File $Record.AfterHash))
+    return ($beforeKnown -and $afterKnown -and $Record.BeforeHash -ne $Record.AfterHash)
+}
+function Hash-Bytes([byte[]]$Bytes) {
+    $a=[Security.Cryptography.SHA256]::Create()
+    try {return [BitConverter]::ToString($a.ComputeHash($Bytes)).Replace('-','').ToLowerInvariant()} finally {$a.Dispose()}
+}
+function Thumbnail-Config([byte[]]$Bytes) {
+    $utf8=New-Object Text.UTF8Encoding($false,$true)
+    $bom=($Bytes.Length -ge 3 -and $Bytes[0] -eq 239 -and $Bytes[1] -eq 187 -and $Bytes[2] -eq 191)
+    $offset=0;if($bom){$offset=3}
+    $value=$utf8.GetString($Bytes,$offset,$Bytes.Length-$offset)
+    $newline="`n";if($value.Contains("`r`n")){$newline="`r`n"}
+    $sections=[regex]::Matches($value,'(?m)^[ \t]*\[([^\]\r\n]+)\][ \t]*(?:#[^\r\n]*)?\r?$')
+    $gpu=@($sections | Where-Object {$_.Groups[1].Value -eq 'GPU'})
+    if($gpu.Count -gt 1){throw '게임별 설정의 GPU 구역이 중복됩니다.'}
+    if($gpu.Count -eq 1){
+        $start=$gpu[0].Index+$gpu[0].Length;$end=$value.Length
+        foreach($section in $sections){if($section.Index -gt $gpu[0].Index){$end=$section.Index;break}}
+        $part=$value.Substring($start,$end-$start)
+        $keys=[regex]::Matches($part,'(?m)^[ \t]*readback_resolve[ \t]*=[^\r\n]*')
+        if($keys.Count -gt 1){throw '게임별 설정의 readback_resolve가 중복됩니다.'}
+        if($keys.Count -eq 1){
+            $key=$keys[0]
+            $parsed=[regex]::Match($key.Value,'^(?<prefix>[ \t]*readback_resolve[ \t]*=[ \t]*)["''](?<mode>none|fast|full)["''](?<tail>[ \t]*(?:#.*)?)$')
+            if(!$parsed.Success){throw '게임별 readback_resolve 값은 none, fast, full 문자열이어야 합니다.'}
+            if($parsed.Groups['mode'].Value -eq 'full'){return ,$Bytes}
+            $replacement=$parsed.Groups['prefix'].Value+'"full"'+$parsed.Groups['tail'].Value
+            $absolute=$start+$key.Index;$value=$value.Substring(0,$absolute)+$replacement+$value.Substring($absolute+$key.Length)
+        }else{
+            $prefix=$value.Substring(0,$end);if(!$prefix.EndsWith("`n")){$prefix+=$newline}
+            $value=$prefix+'readback_resolve = "full"'+$newline+$value.Substring($end)
+        }
+    }else{
+        if($value.Length -and !$value.EndsWith("`n")){$value+=$newline}
+        $value+='[GPU]'+$newline+'readback_resolve = "full"'+$newline
     }
-    return ($Record.BeforeHash -eq $File.BeforeHash -and $null -ne (Get-Upgrade $File $Record.AfterHash))
+    $out=$utf8.GetBytes($value);if($bom){$out=[byte[]](@(239,187,191)+$out)}
+    return ,$out
 }
 function Check-Base {
     if(![IO.File]::Exists((Join-Path $XeniaPath 'xenia_canary.exe')) -and ![IO.File]::Exists((Join-Path $XeniaPath 'xenia.exe'))){throw '선택한 폴더에 Xenia 실행 파일이 없습니다.'}
@@ -116,6 +155,8 @@ function Commit-Changes($Operations) {
 }
 $manifest=Read-Json (Join-Path $PSScriptRoot 'manifest.json')
 if($manifest.Format -ne 'Melo-Reborn-XOR-1' -or $manifest.Game -ne 'Undisputed Reborn 1.1'){throw 'Reborn 전용 배포 형식이 아닙니다.'}
+$configRule=$manifest.Configuration
+if(!$configRule -or $configRule.Scope -ne 'xenia-config' -or $configRule.Path -ne 'config/5451087D.config.toml' -or $configRule.Setting -ne 'GPU.readback_resolve' -or $configRule.Value -ne 'full'){throw '이미지 저장용 설정 기록이 올바르지 않습니다.'}
 $addonPaths=@('patches/5451087D - Melo Korean Fighter Name Pipeline.patch.toml','patches/5451087D - Melo Korean Font Memory.patch.toml')
 foreach($f in $manifest.RuntimeFiles){if((Get-Hash (Safe-Path $PSScriptRoot $f.Path)) -ne $f.Hash){throw ('설치 도구가 손상됐습니다: '+$f.Path)}}
 foreach($r in $manifest.Files){
@@ -149,11 +190,17 @@ if($Mode -eq 'Restore'){
     $ops=@()
     foreach($r in $b.Files){
         $matches=@($manifest.Files | Where-Object {Test-Backup-Transition $_ $r})
-        if($matches.Count -ne 1){throw '복원 대상이 배포 기록과 다릅니다.'}
+        $isConfig=($r.Scope -eq 'xenia-config' -and $r.Path -eq $configRule.Path -and $r.ConfigOverride -eq $true)
+        if(!$isConfig -and $matches.Count -ne 1){throw '복원 대상이 배포 기록과 다릅니다.'}
         $target=Get-Target $r;$source=$null
         if($r.BeforeHash){$source=Safe-Path $backupRoot $r.Backup;if((Get-Hash $source) -ne $r.BeforeHash){throw ('백업 파일이 손상됐습니다: '+$r.Path)}}
+        if($isConfig){
+            [byte[]]$original=@();if($source){$original=[IO.File]::ReadAllBytes($source)}
+            [byte[]]$expected=Thumbnail-Config $original
+            if((Hash-Bytes $expected) -ne $r.AfterHash){throw '백업의 이미지 설정 변경 기록이 올바르지 않습니다.'}
+        }
         $current=Current-Hash $target
-        if($current -eq $r.BeforeHash -or $current -eq $matches[0].BeforeHash){continue}
+        if($current -eq $r.BeforeHash -or (!$isConfig -and $current -eq $matches[0].BeforeHash)){continue}
         if($current -ne $r.AfterHash){throw ('설치 뒤 변경된 파일은 덮어쓰지 않습니다: '+$r.Path)}
         $ops+=[PSCustomObject]@{Target=$target;BeforeHash=$current;AfterHash=$r.BeforeHash;Staged=$source;Rollback=$null}
     }
@@ -161,7 +208,7 @@ if($Mode -eq 'Restore'){
     $undo=Safe-Path $backupRoot ('restore-'+[Guid]::NewGuid().ToString('N'));[IO.Directory]::CreateDirectory($undo) | Out-Null;$i=0
     foreach($o in $ops){if($o.BeforeHash){$o.Rollback=Safe-Path $undo (($i.ToString())+'.bin');[IO.File]::Copy($o.Target,$o.Rollback,$false)};$i++}
     Ensure-Closed;Commit-Changes $ops;$b.Status='Restored';Write-Json $BackupPath $b
-    Write-Host '게임 파일과 한글패치 보조 파일을 설치 전 상태로 복원했습니다.';Write-Host '설정과 저장 데이터는 변경하지 않았습니다.';return
+    Write-Host '게임 파일·한글패치 보조 파일·이미지 저장용 설정을 설치 전 상태로 복원했습니다.';Write-Host '저장 데이터는 변경하지 않았습니다.';return
 }
 $checks=@();$already=0
 foreach($r in $manifest.Files){
@@ -172,6 +219,15 @@ foreach($r in $manifest.Files){
     if($hash -and ((Get-Item -LiteralPath $target).Attributes -band [IO.FileAttributes]::ReadOnly)){throw ('읽기 전용 파일입니다: '+$r.Path)}
     $checks+=[PSCustomObject]@{Record=$r;Target=$target;SourceHash=$hash;DeltaPath=$(if($upgrade){$upgrade.Delta}else{$r.Delta})}
 }
+$configTarget=Get-Target $configRule;$configHash=Current-Hash $configTarget
+[byte[]]$configBytes=@();if($configHash){$configBytes=[IO.File]::ReadAllBytes($configTarget)}
+[byte[]]$newConfig=Thumbnail-Config $configBytes
+$newConfigHash=Hash-Bytes $newConfig
+if($configHash -ne $newConfigHash){
+    if($configHash -and ((Get-Item -LiteralPath $configTarget).Attributes -band [IO.FileAttributes]::ReadOnly)){throw '게임별 이미지 설정 파일이 읽기 전용입니다.'}
+    $configRecord=[PSCustomObject]@{Scope=$configRule.Scope;Path=$configRule.Path;AfterHash=$newConfigHash;AfterBytes=$newConfig.Length}
+    $checks+=[PSCustomObject]@{Record=$configRecord;Target=$configTarget;SourceHash=$configHash;ConfigBytes=$newConfig;ConfigOverride=$true}
+}else{$already++}
 Write-Host ("판본 검사 완료: 적용할 파일 {0}개 / 이미 적용된 파일 {1}개" -f $checks.Count,$already)
 if($Mode -eq 'Check'){Write-Host '검사만 완료했습니다. 파일은 변경하지 않았습니다.';return}
 if(!$checks.Count){Write-Host '이미 같은 한글패치가 적용되어 있습니다. 기존 백업을 유지합니다.';return}
@@ -182,10 +238,11 @@ foreach($c in $checks){
     $r=$c.Record;$save=$null;$relative=$null
     if($c.SourceHash){$relative='original/'+$r.Scope+'/'+$r.Path;$save=Safe-Path $backupRoot $relative;[IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($save)) | Out-Null;[IO.File]::Copy($c.Target,$save,$false);if((Get-Hash $save) -ne $c.SourceHash){throw ('백업 검증 실패: '+$r.Path)}}
     $staged=Safe-Path $backupRoot ('staged/'+$i+'.bin');[IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($staged)) | Out-Null;$i++
-    [MeloRebornDelta]::Expand($save,(Safe-Path $PSScriptRoot $c.DeltaPath),$staged,[int]$r.AfterBytes)
+    if($c.ConfigOverride){[IO.File]::WriteAllBytes($staged,[byte[]]$c.ConfigBytes)}
+    else{[MeloRebornDelta]::Expand($save,(Safe-Path $PSScriptRoot $c.DeltaPath),$staged,[int]$r.AfterBytes)}
     if((Get-Hash $staged) -ne $r.AfterHash){throw ('생성한 패치 파일 검증 실패: '+$r.Path)}
     $ops+=[PSCustomObject]@{Target=$c.Target;Staged=$staged;BeforeHash=$c.SourceHash;AfterHash=$r.AfterHash;Rollback=$save}
-    $saved+=[PSCustomObject]@{Scope=$r.Scope;Path=$r.Path;Backup=$relative;BeforeHash=$c.SourceHash;AfterHash=$r.AfterHash}
+    $saved+=[PSCustomObject]@{Scope=$r.Scope;Path=$r.Path;Backup=$relative;BeforeHash=$c.SourceHash;AfterHash=$r.AfterHash;ConfigOverride=[bool]$c.ConfigOverride}
 }
 $record=[PSCustomObject]@{Format='Melo-Reborn-backup-1';PackageId=$manifest.PackageId;Version=$manifest.Version;GamePath=$GamePath;XeniaPath=$XeniaPath;Status='Prepared';Files=$saved}
 $backupJson=Safe-Path $backupRoot 'backup.json';Write-Json $backupJson $record
@@ -195,4 +252,4 @@ catch {$record.Status='RolledBack';Write-Json $backupJson $record;throw}
 $record.Status='Installed';Write-Json $backupJson $record
 Write-Host 'Reborn 한국어 패치 설치를 완료했습니다.' -ForegroundColor Green
 Write-Host ('백업: '+$backupRoot)
-Write-Host '설정과 저장 데이터는 변경하지 않았습니다. 기존 Reborn 실행 방법으로 실행하세요.'
+Write-Host '게임별 이미지 저장 옵션만 설정했습니다. 다른 설정과 저장 데이터는 유지합니다. 기존 방법으로 실행하세요.'

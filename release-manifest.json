@@ -6,10 +6,18 @@
   "Game": "Undisputed Reborn 1.1",
   "TitleId": "5451087D",
   "TestedXenia": "canary_experimental@5d4dc8a88",
-  "BaselinePhase": "career-waiting-name-static-profile-v7",
+  "BaselinePhase": "normal-trial-thumbnail-readback-v10",
+  "Build": "20261111",
   "SupportedPreviousVersions": [
-    "1.0-beta"
+    "1.0-beta",
+    "1.01"
   ],
+  "Configuration": {
+    "Scope": "xenia-config",
+    "Path": "config/5451087D.config.toml",
+    "Setting": "GPU.readback_resolve",
+    "Value": "full"
+  },
   "BaseFiles": [
     {
       "Path": "default.xex",
@@ -70,11 +78,19 @@
       "Path": "DAT/ytx/EN/career.ytx",
       "BeforeHash": "4b91400179ad2c49e6f0c2645ffadb75ed1fcfa86a128215861e5552e313b44e",
       "BeforeBytes": 758076,
-      "AfterHash": "78f9291aaa5088ba8ab30e5e513db342190b345c788963f0c7b48297b53d15aa",
+      "AfterHash": "eaa2c1bc8eef8a010a51ecca9d165f917667e939bd391a1c146b2205a1bea00c",
       "AfterBytes": 758076,
       "Delta": "data/004.xor.gz",
-      "DeltaHash": "a42a2b06dfa236d806107144cbd9dc3a6a648ee176194d3fe89bb47024faac19",
-      "Previous": []
+      "DeltaHash": "c98d4ea8701a0fa265cd25f15767382ea9951fade8868bd8804791da84ff17d8",
+      "Previous": [
+        {
+          "Version": "1.0-beta",
+          "Hash": "78f9291aaa5088ba8ab30e5e513db342190b345c788963f0c7b48297b53d15aa",
+          "Bytes": 758076,
+          "Delta": "data/004-from-v1.0-beta.xor.gz",
+          "DeltaHash": "35d0280b5c0d1d983ec649870574a3f8c2c48ac1975752537eef5fec17bb6307"
+        }
+      ]
     },
     {
       "Scope": "game",
@@ -451,17 +467,24 @@
       "Path": "patches/5451087D - Melo Korean Fighter Name Pipeline.patch.toml",
       "BeforeHash": null,
       "BeforeBytes": 0,
-      "AfterHash": "8fd4fb571a79ce42a59204fa4500bd7ff3fb834435e0068a0848b03f28252ae0",
-      "AfterBytes": 1232397,
+      "AfterHash": "9e51a91ebbb359f9dbffb81682897a12b584b7b3fd80988ce00cac3fb4af7ea7",
+      "AfterBytes": 1233678,
       "Delta": "data/035.xor.gz",
-      "DeltaHash": "9ed4f6806ccf26bb4eb3392e0a1b52a774434ce6745837260ed0093731a23690",
+      "DeltaHash": "134f901a6bbdcf8818a60789cecbc9ea2d737f4881ad2cc04212bf9ec685a887",
       "Previous": [
         {
           "Version": "1.0-beta",
           "Hash": "e9622cedee31b2707d75815e7c51481eed7dd19b39eb3d8c4ce3d461fbe5e6fd",
           "Bytes": 1193663,
           "Delta": "data/035-from-v1.0-beta.xor.gz",
-          "DeltaHash": "9ace17a344a35789eb42612ef824b4cd61aeeeb20e8a610c3daae7953209449f"
+          "DeltaHash": "7da30db006f2c8389c9ff006bc79eac7d709b0516fcf1b0c7f2ff97baaedf845"
+        },
+        {
+          "Version": "1.01",
+          "Hash": "8fd4fb571a79ce42a59204fa4500bd7ff3fb834435e0068a0848b03f28252ae0",
+          "Bytes": 1232397,
+          "Delta": "data/035-from-v1.01.xor.gz",
+          "DeltaHash": "ffce76cac0e3f20098e50ecada8db0500d8935fd05923370da9abe43553a7699"
         }
       ]
     }
@@ -469,7 +492,7 @@
   "RuntimeFiles": [
     {
       "Path": "patcher.ps1",
-      "Hash": "61292f08499c8ed24ed31b3a577c7603b962a315c90189268f225690467fe605"
+      "Hash": "d97a609394cabf4eadccea882965446776963298a047789cda2c7b0f8d7d5cbf"
     },
     {
       "Path": "lib/MeloRebornDelta.cs",

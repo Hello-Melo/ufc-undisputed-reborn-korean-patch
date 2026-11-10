@@ -1,69 +1,58 @@
 # UFC Undisputed Reborn 한국어 패치
 
-**Undisputed Reborn 1.1 / Xbox 360 / Xenia** 구성을 위한 Melo의 비공식 한국어 패치입니다.
+**Undisputed Reborn 1.1 / Xbox 360 / Xenia**용 비공식 한국어 패치입니다.
 
 ## 다운로드
 
 **[v1.01 릴리스 안내](https://github.com/Hello-Melo/ufc-undisputed-reborn-korean-patch/releases/tag/v1.01) · [한국어 패치 ZIP 다운로드](https://github.com/Hello-Melo/ufc-undisputed-reborn-korean-patch/releases/download/v1.01/UFC-Undisputed-Reborn-Korean-Melo-v1.01.zip)**
 
+**2026-11-11 수정본**입니다. 버전은 v1.01로 유지합니다. 이전 v1.01 사용자도 새 ZIP의 설치.cmd로 업데이트할 수 있습니다.
+
 게임과 **Undisputed Reborn 1.1 모드는 별도로 준비**해야 합니다. 게임·모드 본체와 Xenia 실행 파일은 제공하지 않습니다.
-
-이 저장소는 Reborn 전용입니다. **PS3·RPCS3용 Forever 한글패치와 호환되지 않습니다.** GitHub의 Source code 압축 파일은 설치용 패치 ZIP이 아닙니다.
-
-## v1.01 변경 사항
-
-- 커리어·연습·튜토리얼의 한글 이름과 한국 생성 선수 이름 순서 보완
-- 튜토리얼 세션 제목·진행도와 경기 이름표 겹침 해소
-- 잘못된 이름 마스크·흰 그림자 제거 및 커리어 진입 관련 메모리 처리 보완
-- 기존 v1.0 beta 직접 업데이트와 설치 직전 상태 복원 지원
-
-[버전별 변경 기록](docs/CHANGELOG.md)
+이 저장소는 Reborn 전용이며 PS3·RPCS3용 Forever 패치와 호환되지 않습니다. GitHub의 Source code 압축 파일은 설치용 패치 ZIP이 아닙니다.
 
 ## 작업 내용
 
-| 구분 | 내용 |
-| --- | --- |
-| UI·경기 | 메뉴·설정·가이드·경기·연습·튜토리얼·기록 문구 한글화 |
-| 커리어·오프라인 | 커리어 진행, 상점·대진·해금 조건·경기장·체육관·인물 문구 정리 |
-| 이름 | 확인된 실제 선수와 심판 표기, 커리어 이름·성·별명 후보 440개 한글화 |
-| 한글 입력·글꼴 | 자음·모음 조합 입력, 저장·재로드, Pretendard Bold 기반 표시 보완 |
-| 표시 보완 | 선수 선택·입장·경기·결과 이름 표시와 로딩 문구 간격 갱신 |
-| 설치 도구 | 판본 검사, 자동 백업·설치·복원, 중복 적용 방지 |
+- 공통 UI·경기·연습·튜토리얼·기록·커리어 문구 한글화
+- 확인된 선수·심판 이름, 커리어 이름 후보 및 오프라인 문구 한글화
+- 자음·모음 조합 한글 입력과 저장·재로드 지원
+- 커리어 모드 한글 깨짐 수정 및 뉴스 번역 보완
+- 커리어 선수 이미지 생성·저장 문제 수정
+- 이름·글꼴·화면 배치와 로딩 안내 표시 개선
+- 자동 설치·판본 검사·백업·업데이트·복원
 
-[자세한 작업 내용](docs/WORK.md) · [검증 범위](docs/VALIDATION.md)
+[작업 내용](docs/WORK.md) · [변경 기록](docs/CHANGELOG.md) · [검증 범위](docs/VALIDATION.md)
 
 ## 설치 방법
 
-1. Reborn 1.1과 Xenia를 별도로 준비하고 정상 실행을 확인합니다.
+1. Reborn 1.1과 Xenia를 별도로 준비합니다.
 2. [한국어 패치 ZIP](https://github.com/Hello-Melo/ufc-undisputed-reborn-korean-patch/releases/download/v1.01/UFC-Undisputed-Reborn-Korean-Melo-v1.01.zip)을 모두 압축 해제합니다.
-3. Xenia를 완전히 종료하고 `설치.cmd`를 실행합니다.
-4. Reborn 게임과 Xenia가 들어 있는 폴더를 선택하고, 설치 완료 후 기존 방법으로 실행합니다.
+3. Xenia를 완전히 종료한 뒤 설치.cmd를 실행합니다.
+4. Reborn 게임과 Xenia 폴더를 선택하고 설치 후 기존 방법으로 실행합니다.
 
-`검사.cmd`는 설치 상태만 확인하고, `복원.cmd`는 설치 때 만든 백업으로 되돌립니다. 설정·저장 데이터와 기존 Reborn 패치는 변경하지 않습니다. 기존 v1.0 beta 사용자도 새 ZIP의 설치.cmd로 바로 업데이트할 수 있습니다.
+기존 v1.0 beta·v1.01도 같은 방법으로 업데이트합니다. 검사.cmd는 상태만 확인하며, 복원.cmd는 가장 최근 설치 전 상태로 되돌립니다. 백업 폴더는 유지하세요.
+
+이미지 저장에 필요한 Reborn 게임별 옵션만 자동으로 설정하며, 전역 그래픽 옵션·해상도·키 설정·저장 데이터는 유지합니다.
+기존에 이미지가 깨졌다면 **커리어 → 내 선수 → 외모 편집 → 저장 후 계속하기**로 다시 생성하세요.
 
 [설치·백업·복원 안내](docs/INSTALL.md)
 
-## 확인 범위와 제외 항목
-
-- 사용자 확인: 부팅·메뉴·경기·커리어 초반, 이름·심판·오프라인 문구, 한글 입력·저장·재로드, 경기 진입·PRIDE 로딩
-- 설치 도구: Windows PowerShell 5.1에서 설치·중복 설치·복원·오류 거부·실패 복구 등 27개 검사
-- 커리어 전체 진행과 모든 선수·장면을 전수 플레이한 것은 아닙니다.
-- 온라인 번역과 미확정 선수·관계자 슬롯 53개는 제외합니다.
-- 영어 음성·해설·영상 음성과 실제 사용이 확인되지 않은 DLC 원문은 유지합니다.
-- 입장 장면의 일부 어깨·팔 이음새와 원문 비교환경의 새 선수에서도 재현된 검은 사진칸은 이번 수정 범위에서 제외합니다.
-
 ## 이용 조건
 
-**Melo가 제작한 번역·패치·설치 도구의 상업적 이용·판매·유료 배포를 금지합니다.** 제3자 구성요소에는 각각의 원래 라이선스가 적용됩니다.
-
-게임·Reborn 모드 본체·Xenia·개인 설정·저장·진단본·배경 미리보기는 배포하지 않습니다. 비공식 패치이며, 권리자의 요청이나 문제가 확인되면 배포 중단·삭제·수정 조치를 진행할 수 있습니다.
+번역·패치·설치 도구의 **상업적 이용·판매·유료 배포를 금지**합니다. 제3자 구성요소에는 각각의 원래 라이선스가 적용됩니다.
+게임·Reborn 본체·Xenia·개인 설정·저장·진단본·배경 미리보기는 배포하지 않습니다. 비공식 패치이며 권리자의 요청이나 문제가 확인되면 배포 중단·삭제·수정을 진행할 수 있습니다.
 
 [이용 조건 전문](docs/TERMS.md) · [Pretendard 라이선스](licenses/Pretendard/OFL.txt)
 
+## 확인 범위
+
+사용자가 부팅·메뉴·경기·커리어 초반과 이번 수정 사항을 확인했으며 설치 도구는 56개 검사를 통과했습니다. 커리어 전체 진행과 모든 모드·장면을 전수 플레이한 것은 아닙니다.
+온라인 번역과 보류한 선수·관계자 슬롯은 제외합니다. 영어 음성·해설·영상 음성을 유지합니다. 입장 장면의 일부 어깨·팔 이음새는 패치 전에도 확인된 현상입니다.
+
 ## 무결성 확인
 
-- 파일: `UFC-Undisputed-Reborn-Korean-Melo-v1.01.zip`
-- SHA-256: `f68469744ce933eb9bc29eb1ac3935e6ebcdc3a0d259422336cd7e54dfbdd789`
+- 파일: UFC-Undisputed-Reborn-Korean-Melo-v1.01.zip
+- SHA-256: `af54499f81189d2c90929476f6e544abcca309232f7eee71353019067de15513`
 - [체크섬 파일](https://github.com/Hello-Melo/ufc-undisputed-reborn-korean-patch/releases/download/v1.01/UFC-Undisputed-Reborn-Korean-Melo-v1.01.sha256)
 
-설치 도구 소스는 `installer/`, 대상 판본과 변경 파일 해시는 `release-manifest.json`에서 확인할 수 있습니다. 설치에는 릴리스의 완성된 ZIP을 사용하세요.
+설치 도구 소스는 installer/, 적용 판본과 파일 해시는 release-manifest.json에서 확인할 수 있습니다.
