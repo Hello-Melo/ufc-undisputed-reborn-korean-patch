@@ -4,11 +4,20 @@
 
 ## 다운로드
 
-**[v1.0 beta 릴리스 안내](https://github.com/Hello-Melo/ufc-undisputed-reborn-korean-patch/releases/tag/v1.0-beta) · [한국어 패치 ZIP 다운로드](https://github.com/Hello-Melo/ufc-undisputed-reborn-korean-patch/releases/download/v1.0-beta/UFC-Undisputed-Reborn-Korean-Melo-v1.0-beta.zip)**
+**[v1.01 릴리스 안내](https://github.com/Hello-Melo/ufc-undisputed-reborn-korean-patch/releases/tag/v1.01) · [한국어 패치 ZIP 다운로드](https://github.com/Hello-Melo/ufc-undisputed-reborn-korean-patch/releases/download/v1.01/UFC-Undisputed-Reborn-Korean-Melo-v1.01.zip)**
 
 게임과 **Undisputed Reborn 1.1 모드는 별도로 준비**해야 합니다. 게임·모드 본체와 Xenia 실행 파일은 제공하지 않습니다.
 
 이 저장소는 Reborn 전용입니다. **PS3·RPCS3용 Forever 한글패치와 호환되지 않습니다.** GitHub의 Source code 압축 파일은 설치용 패치 ZIP이 아닙니다.
+
+## v1.01 변경 사항
+
+- 커리어·연습·튜토리얼의 한글 이름과 한국 생성 선수 이름 순서 보완
+- 튜토리얼 세션 제목·진행도와 경기 이름표 겹침 해소
+- 잘못된 이름 마스크·흰 그림자 제거 및 커리어 진입 관련 메모리 처리 보완
+- 기존 v1.0 beta 직접 업데이트와 설치 직전 상태 복원 지원
+
+[버전별 변경 기록](docs/CHANGELOG.md)
 
 ## 작업 내용
 
@@ -26,22 +35,22 @@
 ## 설치 방법
 
 1. Reborn 1.1과 Xenia를 별도로 준비하고 정상 실행을 확인합니다.
-2. [한국어 패치 ZIP](https://github.com/Hello-Melo/ufc-undisputed-reborn-korean-patch/releases/download/v1.0-beta/UFC-Undisputed-Reborn-Korean-Melo-v1.0-beta.zip)을 모두 압축 해제합니다.
+2. [한국어 패치 ZIP](https://github.com/Hello-Melo/ufc-undisputed-reborn-korean-patch/releases/download/v1.01/UFC-Undisputed-Reborn-Korean-Melo-v1.01.zip)을 모두 압축 해제합니다.
 3. Xenia를 완전히 종료하고 `설치.cmd`를 실행합니다.
 4. Reborn 게임과 Xenia가 들어 있는 폴더를 선택하고, 설치 완료 후 기존 방법으로 실행합니다.
 
-`검사.cmd`는 설치 상태만 확인하고, `복원.cmd`는 설치 때 만든 백업으로 되돌립니다. 설정·저장 데이터와 기존 Reborn 패치는 변경하지 않습니다.
+`검사.cmd`는 설치 상태만 확인하고, `복원.cmd`는 설치 때 만든 백업으로 되돌립니다. 설정·저장 데이터와 기존 Reborn 패치는 변경하지 않습니다. 기존 v1.0 beta 사용자도 새 ZIP의 설치.cmd로 바로 업데이트할 수 있습니다.
 
 [설치·백업·복원 안내](docs/INSTALL.md)
 
 ## 확인 범위와 제외 항목
 
 - 사용자 확인: 부팅·메뉴·경기·커리어 초반, 이름·심판·오프라인 문구, 한글 입력·저장·재로드, 경기 진입·PRIDE 로딩
-- 설치 도구: Windows PowerShell 5.1에서 설치·중복 설치·복원·오류 거부·실패 복구 등 18개 검사
+- 설치 도구: Windows PowerShell 5.1에서 설치·중복 설치·복원·오류 거부·실패 복구 등 27개 검사
 - 커리어 전체 진행과 모든 선수·장면을 전수 플레이한 것은 아닙니다.
 - 온라인 번역과 미확정 선수·관계자 슬롯 53개는 제외합니다.
 - 영어 음성·해설·영상 음성과 실제 사용이 확인되지 않은 DLC 원문은 유지합니다.
-- 입장 장면의 일부 어깨·팔 이음새는 패치 전에도 확인된 현상이며 이 패치의 수정 범위가 아닙니다.
+- 입장 장면의 일부 어깨·팔 이음새와 원문 비교환경의 새 선수에서도 재현된 검은 사진칸은 이번 수정 범위에서 제외합니다.
 
 ## 이용 조건
 
@@ -53,8 +62,8 @@
 
 ## 무결성 확인
 
-- 파일: `UFC-Undisputed-Reborn-Korean-Melo-v1.0-beta.zip`
-- SHA-256: `e5ead07caabb350e76044cd2121603ea51f95721940623549b7be84162915bad`
-- [체크섬 파일](https://github.com/Hello-Melo/ufc-undisputed-reborn-korean-patch/releases/download/v1.0-beta/UFC-Undisputed-Reborn-Korean-Melo-v1.0-beta.sha256)
+- 파일: `UFC-Undisputed-Reborn-Korean-Melo-v1.01.zip`
+- SHA-256: `f68469744ce933eb9bc29eb1ac3935e6ebcdc3a0d259422336cd7e54dfbdd789`
+- [체크섬 파일](https://github.com/Hello-Melo/ufc-undisputed-reborn-korean-patch/releases/download/v1.01/UFC-Undisputed-Reborn-Korean-Melo-v1.01.sha256)
 
 설치 도구 소스는 `installer/`, 대상 판본과 변경 파일 해시는 `release-manifest.json`에서 확인할 수 있습니다. 설치에는 릴리스의 완성된 ZIP을 사용하세요.

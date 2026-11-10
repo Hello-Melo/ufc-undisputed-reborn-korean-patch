@@ -1,12 +1,15 @@
 {
   "Format": "Melo-Reborn-XOR-1",
   "PackageId": "Melo-Reborn-Korean",
-  "Version": "1.0-beta",
+  "Version": "1.01",
   "Author": "Melo",
   "Game": "Undisputed Reborn 1.1",
   "TitleId": "5451087D",
   "TestedXenia": "canary_experimental@5d4dc8a88",
-  "BaselinePhase": "loading-spacing-refresh-v1",
+  "BaselinePhase": "career-waiting-name-static-profile-v7",
+  "SupportedPreviousVersions": [
+    "1.0-beta"
+  ],
   "BaseFiles": [
     {
       "Path": "default.xex",
@@ -26,7 +29,8 @@
       "AfterHash": "347e678e8cb484b6032c7dad1e62a60850b44cb59c598140943d2cf80762950c",
       "AfterBytes": 165333,
       "Delta": "data/000.xor.gz",
-      "DeltaHash": "be376f389cec7c957f9fbcfe309a6008bcc597a11a83e4df6397e8313ac010eb"
+      "DeltaHash": "be376f389cec7c957f9fbcfe309a6008bcc597a11a83e4df6397e8313ac010eb",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -36,7 +40,8 @@
       "AfterHash": "00f50d161476360b95f3c0c257c31a2883e192067456277d294e1a221b4b1ec1",
       "AfterBytes": 15340,
       "Delta": "data/001.xor.gz",
-      "DeltaHash": "aad0dea2a6d10b9867a2782a7fb3a0ede98ff7773a01545386f78bb4e2ba79f0"
+      "DeltaHash": "aad0dea2a6d10b9867a2782a7fb3a0ede98ff7773a01545386f78bb4e2ba79f0",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -46,7 +51,8 @@
       "AfterHash": "b231ccd1d90c3abbf244add73519ea351af64d50744264edf443b9a1e8f27aec",
       "AfterBytes": 21840,
       "Delta": "data/002.xor.gz",
-      "DeltaHash": "72ff251729e15ac768c16bee07344a4d9ba464809134dcb8009bb58854e95f34"
+      "DeltaHash": "72ff251729e15ac768c16bee07344a4d9ba464809134dcb8009bb58854e95f34",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -56,7 +62,8 @@
       "AfterHash": "31c567878e9ddd457395abbcd3023eda825a4c8b5157324ba49418de308995fd",
       "AfterBytes": 192784,
       "Delta": "data/003.xor.gz",
-      "DeltaHash": "97d875b3f6d2759ee01f96264ec8ab2bb618d2f2650665b58ce80aa93966b382"
+      "DeltaHash": "97d875b3f6d2759ee01f96264ec8ab2bb618d2f2650665b58ce80aa93966b382",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -66,7 +73,8 @@
       "AfterHash": "78f9291aaa5088ba8ab30e5e513db342190b345c788963f0c7b48297b53d15aa",
       "AfterBytes": 758076,
       "Delta": "data/004.xor.gz",
-      "DeltaHash": "a42a2b06dfa236d806107144cbd9dc3a6a648ee176194d3fe89bb47024faac19"
+      "DeltaHash": "a42a2b06dfa236d806107144cbd9dc3a6a648ee176194d3fe89bb47024faac19",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -76,7 +84,8 @@
       "AfterHash": "165125c21155aa8c65e7e0acf425f62e115e8c4ce9f99aa8d23d11253cf02de7",
       "AfterBytes": 266020,
       "Delta": "data/005.xor.gz",
-      "DeltaHash": "1fe693363e71fadb6cf41392accf5595177112ed187382111444a94f30a39e73"
+      "DeltaHash": "1fe693363e71fadb6cf41392accf5595177112ed187382111444a94f30a39e73",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -86,7 +95,8 @@
       "AfterHash": "37bb68729554621eb6bb067de59dc6ffa70d65a22ef404baad3e0e2152dd876d",
       "AfterBytes": 328108,
       "Delta": "data/006.xor.gz",
-      "DeltaHash": "c2c78d2f31067a983b52baadeb3e3531825ffd851d26142f073274c8f4b6211b"
+      "DeltaHash": "c2c78d2f31067a983b52baadeb3e3531825ffd851d26142f073274c8f4b6211b",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -96,7 +106,8 @@
       "AfterHash": "6fd75e9688fbb55f8d45a54b272248ffb7bb41c94b60bf1a527faba952ce6904",
       "AfterBytes": 2372,
       "Delta": "data/007.xor.gz",
-      "DeltaHash": "f2c136f08d15242651a8abc319ff0901f3a6936a082f900e5bf87bb1dd732c02"
+      "DeltaHash": "f2c136f08d15242651a8abc319ff0901f3a6936a082f900e5bf87bb1dd732c02",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -106,7 +117,8 @@
       "AfterHash": "3cc01cf5bd8c9317ab97063b45fe840a8d80566211278d274a4946caec6866ec",
       "AfterBytes": 5344,
       "Delta": "data/008.xor.gz",
-      "DeltaHash": "8f676afbe6b45b768679953c193a0b7f264cc153a43a60e2e201536ab609a3e4"
+      "DeltaHash": "8f676afbe6b45b768679953c193a0b7f264cc153a43a60e2e201536ab609a3e4",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -116,7 +128,8 @@
       "AfterHash": "a67effa191ff0e0aeff0e247aa2c5cd38d416e855265f3026ed372eb280633e2",
       "AfterBytes": 4728,
       "Delta": "data/009.xor.gz",
-      "DeltaHash": "7ddf1922c25e867e20a8901802cfa111a7a829a1cf5760905b223207d0a08724"
+      "DeltaHash": "7ddf1922c25e867e20a8901802cfa111a7a829a1cf5760905b223207d0a08724",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -126,7 +139,8 @@
       "AfterHash": "00668769a97dc3a99b7114a4f7f063d91659e1b8cb752eac1b32ff93a48f34b0",
       "AfterBytes": 1099788,
       "Delta": "data/010.xor.gz",
-      "DeltaHash": "bcb2f7adc9fe3fcdf29d7527d5ea9802030ea707317542cf839e758199220495"
+      "DeltaHash": "bcb2f7adc9fe3fcdf29d7527d5ea9802030ea707317542cf839e758199220495",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -136,7 +150,8 @@
       "AfterHash": "800028593ed2489f02ef6a2f3a010c746e47948c8a8a0885472977afac8e8164",
       "AfterBytes": 1110028,
       "Delta": "data/011.xor.gz",
-      "DeltaHash": "fa568a8a800b07e907f52ad54e87b5fb0101598e63170fed7c988cb0d2e4215e"
+      "DeltaHash": "fa568a8a800b07e907f52ad54e87b5fb0101598e63170fed7c988cb0d2e4215e",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -146,7 +161,8 @@
       "AfterHash": "c8f71b32c3724660612aa3f5d31bbd8792875f5b081e737c7083c5ce44999750",
       "AfterBytes": 1110028,
       "Delta": "data/012.xor.gz",
-      "DeltaHash": "4f3f914616c12357a96774a26483e5c408db5be88471cbe82cf7144395caeeaa"
+      "DeltaHash": "4f3f914616c12357a96774a26483e5c408db5be88471cbe82cf7144395caeeaa",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -156,7 +172,8 @@
       "AfterHash": "44b7c54593f02244aa9f585abeae9653499f89e3ada57bf1c9c3192d2317c1a5",
       "AfterBytes": 585740,
       "Delta": "data/013.xor.gz",
-      "DeltaHash": "94558c29857302de0f2860a2b34a00727e3cf5c7340f0bcc60eaa97668c48743"
+      "DeltaHash": "94558c29857302de0f2860a2b34a00727e3cf5c7340f0bcc60eaa97668c48743",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -166,7 +183,8 @@
       "AfterHash": "359497002b7861d5d1baf71deeb4e28e8e2d879e68d1aa61ed8548b7afa0a142",
       "AfterBytes": 1101836,
       "Delta": "data/014.xor.gz",
-      "DeltaHash": "333fef7cefe9fd921f6b457e49d8a5c010ffc2bf4745961a937731980f7d91a0"
+      "DeltaHash": "333fef7cefe9fd921f6b457e49d8a5c010ffc2bf4745961a937731980f7d91a0",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -176,7 +194,8 @@
       "AfterHash": "24a6498147b3699f4e3f512137e710df55e8ea33917bdcdeb341e077ea2e3e0d",
       "AfterBytes": 1101836,
       "Delta": "data/015.xor.gz",
-      "DeltaHash": "90f392329c07e1fe5a7abf9832176719a0147f67b65b88845b2175b4e1257efe"
+      "DeltaHash": "90f392329c07e1fe5a7abf9832176719a0147f67b65b88845b2175b4e1257efe",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -186,7 +205,8 @@
       "AfterHash": "55782d3376e99fa34f5643743524fe2c3cd0f5a4f6cba41766a68ca7e48472f9",
       "AfterBytes": 4276,
       "Delta": "data/016.xor.gz",
-      "DeltaHash": "e8ced553323cace4b909016befec0d45db818a114f9c97e2a3c63a4381a0a17d"
+      "DeltaHash": "e8ced553323cace4b909016befec0d45db818a114f9c97e2a3c63a4381a0a17d",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -196,7 +216,8 @@
       "AfterHash": "c174661e20239e887d2f13732870467dddf4012afd1efce03829523a411d8793",
       "AfterBytes": 249492,
       "Delta": "data/017.xor.gz",
-      "DeltaHash": "1f99d2cdbba3ad4be1a807d607dda73d388918f30ffdf926dee1aca0e58adffa"
+      "DeltaHash": "1f99d2cdbba3ad4be1a807d607dda73d388918f30ffdf926dee1aca0e58adffa",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -206,7 +227,8 @@
       "AfterHash": "7637232e5eff9a67332d89529d44aca7c4f781d3f4679bcd2a406ad407f8510c",
       "AfterBytes": 60136,
       "Delta": "data/018.xor.gz",
-      "DeltaHash": "65823c02ee48308c1bb9e212dd3d12dd6850eb83aa22530010999b4405ce114c"
+      "DeltaHash": "65823c02ee48308c1bb9e212dd3d12dd6850eb83aa22530010999b4405ce114c",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -216,7 +238,8 @@
       "AfterHash": "6e4cb1cbcb718937b42a7a40a6edde9bce600b1fc9ec2921178b0912455d9d9b",
       "AfterBytes": 92520,
       "Delta": "data/019.xor.gz",
-      "DeltaHash": "75b27321f7d42dc073b14cd2fc19a501b6ed830b2852dee6988582788bea92cc"
+      "DeltaHash": "75b27321f7d42dc073b14cd2fc19a501b6ed830b2852dee6988582788bea92cc",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -226,7 +249,8 @@
       "AfterHash": "037f60b550d99265fccfc07ad24e08f5ea556dbbba99ba0081e5c9b4d002bfba",
       "AfterBytes": 28972,
       "Delta": "data/020.xor.gz",
-      "DeltaHash": "f448de55c36ea03ab62391e2952fb3258b433bb26d792c95c58945f48a015d43"
+      "DeltaHash": "f448de55c36ea03ab62391e2952fb3258b433bb26d792c95c58945f48a015d43",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -236,7 +260,8 @@
       "AfterHash": "d6d499eff693be7e9e2a6ace2988ca4b1defdadf801ea2da292a4ff666e56168",
       "AfterBytes": 26304,
       "Delta": "data/021.xor.gz",
-      "DeltaHash": "9b8144ffbeab5ced20d568d70c981a9325544609f79511c9b02c5bde5f266342"
+      "DeltaHash": "9b8144ffbeab5ced20d568d70c981a9325544609f79511c9b02c5bde5f266342",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -246,7 +271,8 @@
       "AfterHash": "69586ee2fca8b8c55b01f375c6310b1f2a276b8cce63b59ce819001f80218906",
       "AfterBytes": 12584,
       "Delta": "data/022.xor.gz",
-      "DeltaHash": "c3cd5aa9fa8f6c6bf1a4a896b15281eeaa2fb939405a9f72fc462a5b34816467"
+      "DeltaHash": "c3cd5aa9fa8f6c6bf1a4a896b15281eeaa2fb939405a9f72fc462a5b34816467",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -256,7 +282,8 @@
       "AfterHash": "913da2e37ad3ac587e2c5bfb49a6db50b8ce6c5820f350ba4d539d625945e3ad",
       "AfterBytes": 7924,
       "Delta": "data/023.xor.gz",
-      "DeltaHash": "62cd0b895fd2fd0b4d77aa25ce2209ffe706be82989081f8f9fcb80c59a0d413"
+      "DeltaHash": "62cd0b895fd2fd0b4d77aa25ce2209ffe706be82989081f8f9fcb80c59a0d413",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -266,7 +293,8 @@
       "AfterHash": "dc2da3b9d3dbe814c9ad37c032eae3a1078a5ca3f94ef68079875b79a179b1c2",
       "AfterBytes": 6044,
       "Delta": "data/024.xor.gz",
-      "DeltaHash": "628aacb8dcec49ecf7f12ca9fc072b6ce0642b5ff45e06602e6f88a2004893da"
+      "DeltaHash": "628aacb8dcec49ecf7f12ca9fc072b6ce0642b5ff45e06602e6f88a2004893da",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -276,7 +304,8 @@
       "AfterHash": "29400e3b66765c71730f116cf1cba66e0359a8dda0814ad0cbc6840fc0f98d8a",
       "AfterBytes": 215164,
       "Delta": "data/025.xor.gz",
-      "DeltaHash": "84459ba359241490dc49e72cbec1860a35d2ea335ba3716c4c6d565fd6bb0e35"
+      "DeltaHash": "84459ba359241490dc49e72cbec1860a35d2ea335ba3716c4c6d565fd6bb0e35",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -286,7 +315,8 @@
       "AfterHash": "9a73860f65de9e2218bdbc4529663945faa7be7d1c96ddba2f828f74be5188eb",
       "AfterBytes": 1112,
       "Delta": "data/026.xor.gz",
-      "DeltaHash": "2f14d1ea8b7b85437c0946aea7d15fc6dd9db9b7eaec9d2db8638551449e340b"
+      "DeltaHash": "2f14d1ea8b7b85437c0946aea7d15fc6dd9db9b7eaec9d2db8638551449e340b",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -296,7 +326,8 @@
       "AfterHash": "249123bb1f04273b267ad5778b01aa9a2800ea4233b4e6885d00a089cbc96efc",
       "AfterBytes": 32326,
       "Delta": "data/027.xor.gz",
-      "DeltaHash": "c8ef8c551a731c67500d2b16b92601358a6d9e46ff43ce6e6e04d7b6bc298042"
+      "DeltaHash": "c8ef8c551a731c67500d2b16b92601358a6d9e46ff43ce6e6e04d7b6bc298042",
+      "Previous": []
     },
     {
       "Scope": "game",
@@ -306,47 +337,84 @@
       "AfterHash": "e5a25f564ee8eb59d351afc2b72d416c182b7e6020187a1a6dca6a827a5af674",
       "AfterBytes": 2517408,
       "Delta": "data/028.xor.gz",
-      "DeltaHash": "aada0b01541b783755120ff37bc048aabab2e726c9dbfa791225bafe2b53eb1c"
+      "DeltaHash": "aada0b01541b783755120ff37bc048aabab2e726c9dbfa791225bafe2b53eb1c",
+      "Previous": []
     },
     {
       "Scope": "game",
       "Path": "DAT/menu/mad/EXH_chs.pac",
       "BeforeHash": "8e33cbd69f2dc3675165124b9989f61a5476fdddbc59b60131dc1c0a452f9437",
       "BeforeBytes": 21203680,
-      "AfterHash": "dbc24e71a3b68b58d283bc97f36765172a08cc0602b7a6603a046efcfe6d7fda",
+      "AfterHash": "41ef7643b733d26d104efedc57f70033db155de22f9b2b2a8717cf40754ab01a",
       "AfterBytes": 21203680,
       "Delta": "data/029.xor.gz",
-      "DeltaHash": "34fc412b7099a0efd6507a1eb7799c2867686cfadf26c135493aad7463b4efc8"
+      "DeltaHash": "bf6d4fd963a7dc507868cf511c6dfc874f360747dd171f46b1870522bba698ba",
+      "Previous": [
+        {
+          "Version": "1.0-beta",
+          "Hash": "dbc24e71a3b68b58d283bc97f36765172a08cc0602b7a6603a046efcfe6d7fda",
+          "Bytes": 21203680,
+          "Delta": "data/029-from-v1.0-beta.xor.gz",
+          "DeltaHash": "63bbca998e97482306a00e3045e85d7601c109cff2bb95bcdb112fbf63001d84"
+        }
+      ]
     },
     {
       "Scope": "game",
       "Path": "DAT/menu/mad/EXH_chs_pr.pac",
       "BeforeHash": "c6341f19ff5dc4e3991e7f50ca2f4527b8f937b047c4014b0baf0caf80d0c7f0",
       "BeforeBytes": 21203680,
-      "AfterHash": "c3b6a566536cf7037428f738085beedeaa405d22f68330987d38d9a88f32e78c",
+      "AfterHash": "ada02a752889e7e1742710f75a258d570f25e59406913f8f2e1f8a094fa1f95b",
       "AfterBytes": 21203680,
       "Delta": "data/030.xor.gz",
-      "DeltaHash": "34fc412b7099a0efd6507a1eb7799c2867686cfadf26c135493aad7463b4efc8"
+      "DeltaHash": "bf6d4fd963a7dc507868cf511c6dfc874f360747dd171f46b1870522bba698ba",
+      "Previous": [
+        {
+          "Version": "1.0-beta",
+          "Hash": "c3b6a566536cf7037428f738085beedeaa405d22f68330987d38d9a88f32e78c",
+          "Bytes": 21203680,
+          "Delta": "data/030-from-v1.0-beta.xor.gz",
+          "DeltaHash": "63bbca998e97482306a00e3045e85d7601c109cff2bb95bcdb112fbf63001d84"
+        }
+      ]
     },
     {
       "Scope": "game",
       "Path": "DAT/hud/exh_ppv.pac",
       "BeforeHash": "aff225489b15e5a47abdb88fa42f42b34bfdd9fb790c4e233639c6de4c11ed07",
       "BeforeBytes": 4948544,
-      "AfterHash": "84fbb46a486189b485fe05988c51c50641d7a893664343db1c48d29cb6f0c48b",
+      "AfterHash": "aaf7f8b24962722497c6c1c8a848bd83445e674b418bbefb0d12bd27339de92e",
       "AfterBytes": 4948544,
       "Delta": "data/031.xor.gz",
-      "DeltaHash": "c04f802c8f5cfe151d7d23062d3b8ff88fa39ae9b2cebe8dbe9af73f25325c63"
+      "DeltaHash": "32b5b3c1adc4dc9b37739fb7018292c20a73816784edc6e753fe82015235cc8c",
+      "Previous": [
+        {
+          "Version": "1.0-beta",
+          "Hash": "84fbb46a486189b485fe05988c51c50641d7a893664343db1c48d29cb6f0c48b",
+          "Bytes": 4948544,
+          "Delta": "data/031-from-v1.0-beta.xor.gz",
+          "DeltaHash": "d4e451554869f4e9ed31b07a57ab732cf20bdf6848061bfeab8e0e2dacb94dcd"
+        }
+      ]
     },
     {
       "Scope": "game",
       "Path": "DAT/hud/exh_ufn.pac",
       "BeforeHash": "14b4b7f0281e0409efc0042ac583d0d946a36db5e3cfbd79cc496b4a508fe475",
       "BeforeBytes": 4948544,
-      "AfterHash": "2432890d57bc724367d78d405a5d664260cf57db9f46f0401efa98631c9482cd",
+      "AfterHash": "88c13d3354ef8d9e3b912282bf6b15edf92ec9d4ed01ad026dc5b5668d89266b",
       "AfterBytes": 4948544,
       "Delta": "data/032.xor.gz",
-      "DeltaHash": "4e3f34ae98f857e8eafa24c8337512b78478f445d5345eb7a434e2f60351bc5c"
+      "DeltaHash": "e2b27f81a1af6af3bdde73fdd13e8bc675744cface6a7b858197da39e72cfba4",
+      "Previous": [
+        {
+          "Version": "1.0-beta",
+          "Hash": "2432890d57bc724367d78d405a5d664260cf57db9f46f0401efa98631c9482cd",
+          "Bytes": 4948544,
+          "Delta": "data/032-from-v1.0-beta.xor.gz",
+          "DeltaHash": "35647bc2b99b010c26eb106941e10cbb60f4a01b272f76d1b5b6e0111ea11c72"
+        }
+      ]
     },
     {
       "Scope": "game",
@@ -356,33 +424,52 @@
       "AfterHash": "c6b935251911198dd684869dcc88a84bd41e2e216fb5712a7913e76ec4db6320",
       "AfterBytes": 5951296,
       "Delta": "data/033.xor.gz",
-      "DeltaHash": "907bca5e36e77f312d0de1a71433f4d53cafc54a37e1e539e39b58676028eee1"
+      "DeltaHash": "907bca5e36e77f312d0de1a71433f4d53cafc54a37e1e539e39b58676028eee1",
+      "Previous": []
     },
     {
       "Scope": "xenia",
       "Path": "patches/5451087D - Melo Korean Font Memory.patch.toml",
       "BeforeHash": null,
       "BeforeBytes": 0,
-      "AfterHash": "3ace9e6ad56f7db96e8e8c1ba39cf853a7ed3f6be58808640f59c008432b38b4",
-      "AfterBytes": 810,
+      "AfterHash": "5b74592d85770b816e25ae1d9fceaeb7f1cc855e4d1de2eea855370390765544",
+      "AfterBytes": 961,
       "Delta": "data/034.xor.gz",
-      "DeltaHash": "2405dd2228c2a1df3b879e2e127c3d9e649e03966dc5581c25e5db76aa6f0b15"
+      "DeltaHash": "d30247d2676b11b1660d454a5a8acbc6d09313923943867a850220e3cddeaf81",
+      "Previous": [
+        {
+          "Version": "1.0-beta",
+          "Hash": "3ace9e6ad56f7db96e8e8c1ba39cf853a7ed3f6be58808640f59c008432b38b4",
+          "Bytes": 810,
+          "Delta": "data/034-from-v1.0-beta.xor.gz",
+          "DeltaHash": "ea44a6428ca09722a4e73c1d9911ed84e084773b45c4102e801a5a860c6c124a"
+        }
+      ]
     },
     {
       "Scope": "xenia",
       "Path": "patches/5451087D - Melo Korean Fighter Name Pipeline.patch.toml",
       "BeforeHash": null,
       "BeforeBytes": 0,
-      "AfterHash": "e9622cedee31b2707d75815e7c51481eed7dd19b39eb3d8c4ce3d461fbe5e6fd",
-      "AfterBytes": 1193663,
+      "AfterHash": "8fd4fb571a79ce42a59204fa4500bd7ff3fb834435e0068a0848b03f28252ae0",
+      "AfterBytes": 1232397,
       "Delta": "data/035.xor.gz",
-      "DeltaHash": "7f414d6dfdfce33be65257c4506bbda1bf0369aaa9abf94a1615e5a13c31b767"
+      "DeltaHash": "9ed4f6806ccf26bb4eb3392e0a1b52a774434ce6745837260ed0093731a23690",
+      "Previous": [
+        {
+          "Version": "1.0-beta",
+          "Hash": "e9622cedee31b2707d75815e7c51481eed7dd19b39eb3d8c4ce3d461fbe5e6fd",
+          "Bytes": 1193663,
+          "Delta": "data/035-from-v1.0-beta.xor.gz",
+          "DeltaHash": "9ace17a344a35789eb42612ef824b4cd61aeeeb20e8a610c3daae7953209449f"
+        }
+      ]
     }
   ],
   "RuntimeFiles": [
     {
       "Path": "patcher.ps1",
-      "Hash": "0eca5aaacb13626f00ec0e74991a4156d9e224a9fa52e3e8ace705002d8cd262"
+      "Hash": "61292f08499c8ed24ed31b3a577c7603b962a315c90189268f225690467fe605"
     },
     {
       "Path": "lib/MeloRebornDelta.cs",

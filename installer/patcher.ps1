@@ -69,6 +69,18 @@ function Get-Target($Record) {
     }
     throw '알 수 없는 적용 구분입니다.'
 }
+function Get-Upgrade($File,$Hash) {
+    $items=@($File.Previous | Where-Object {$_ -and $_.Hash -eq $Hash})
+    if($items.Count -gt 1){throw ('이전 버전 해시 기록이 중복됩니다: '+$File.Path)}
+    if($items.Count -eq 1){return $items[0]};return $null
+}
+function Test-Backup-Transition($File,$Record) {
+    if($File.Scope -ne $Record.Scope -or $File.Path -ne $Record.Path){return $false}
+    if($Record.AfterHash -eq $File.AfterHash){
+        return ($Record.BeforeHash -eq $File.BeforeHash -or $null -ne (Get-Upgrade $File $Record.BeforeHash))
+    }
+    return ($Record.BeforeHash -eq $File.BeforeHash -and $null -ne (Get-Upgrade $File $Record.AfterHash))
+}
 function Check-Base {
     if(![IO.File]::Exists((Join-Path $XeniaPath 'xenia_canary.exe')) -and ![IO.File]::Exists((Join-Path $XeniaPath 'xenia.exe'))){throw '선택한 폴더에 Xenia 실행 파일이 없습니다.'}
     if(!(Test-Path -LiteralPath (Join-Path $XeniaPath 'patches') -PathType Container)){throw 'Reborn의 기존 patches 폴더가 없습니다. Reborn 1.1을 먼저 준비해 주세요.'}
@@ -106,7 +118,10 @@ $manifest=Read-Json (Join-Path $PSScriptRoot 'manifest.json')
 if($manifest.Format -ne 'Melo-Reborn-XOR-1' -or $manifest.Game -ne 'Undisputed Reborn 1.1'){throw 'Reborn 전용 배포 형식이 아닙니다.'}
 $addonPaths=@('patches/5451087D - Melo Korean Fighter Name Pipeline.patch.toml','patches/5451087D - Melo Korean Font Memory.patch.toml')
 foreach($f in $manifest.RuntimeFiles){if((Get-Hash (Safe-Path $PSScriptRoot $f.Path)) -ne $f.Hash){throw ('설치 도구가 손상됐습니다: '+$f.Path)}}
-foreach($r in $manifest.Files){if((Get-Hash (Safe-Path $PSScriptRoot $r.Delta)) -ne $r.DeltaHash){throw ('패치 차이 자료가 손상됐습니다: '+$r.Delta)}}
+foreach($r in $manifest.Files){
+    if((Get-Hash (Safe-Path $PSScriptRoot $r.Delta)) -ne $r.DeltaHash){throw ('패치 차이 자료가 손상됐습니다: '+$r.Delta)}
+    foreach($u in @($r.Previous)){if($u -and (Get-Hash (Safe-Path $PSScriptRoot $u.Delta)) -ne $u.DeltaHash){throw ('이전 버전 업데이트 자료가 손상됐습니다: '+$r.Path)}}
+}
 Add-Type -Path (Safe-Path $PSScriptRoot 'lib/MeloRebornDelta.cs')
 if($Mode -ne 'Check'){Ensure-Closed}
 if($Mode -eq 'Restore' -and $BackupPath){
@@ -117,13 +132,14 @@ Check-Base
 if($Mode -eq 'Restore'){
     if(!$BackupPath){
         $backupBase=Safe-Path $GamePath 'Melo_Reborn_KO_Backups'
-        $choices=@()
+        $choices=@();$restoredChoices=@()
         if(Test-Path -LiteralPath $backupBase){
             foreach($dir in @(Get-ChildItem -LiteralPath $backupBase -Directory | Sort-Object Name -Descending)){
                 $fp=Join-Path $dir.FullName 'backup.json'
-                if([IO.File]::Exists($fp)){$candidate=Read-Json $fp;if($candidate.Format -eq 'Melo-Reborn-backup-1' -and $candidate.Status -in @('Installed','Restored','Prepared')){$choices+=$fp}}
+                if([IO.File]::Exists($fp)){$candidate=Read-Json $fp;if($candidate.Format -eq 'Melo-Reborn-backup-1'){if($candidate.Status -in @('Installed','Prepared')){$choices+=$fp}elseif($candidate.Status -eq 'Restored'){$restoredChoices+=$fp}}}
             }
         }
+        if(!$choices.Count){$choices=@($restoredChoices)}
         if(!$choices.Count){throw '이 설치 도구로 만든 백업이 없습니다. 게임 폴더의 Melo_Reborn_KO_Backups를 확인해 주세요.'}
         $BackupPath=$choices[0]
     }
@@ -132,12 +148,12 @@ if($Mode -eq 'Restore'){
     if(!$backupRoot.StartsWith($allowed+'\',[StringComparison]::OrdinalIgnoreCase) -or $b.Format -ne 'Melo-Reborn-backup-1' -or $b.PackageId -ne $manifest.PackageId -or $b.GamePath -ne $GamePath -or $b.XeniaPath -ne $XeniaPath){throw '선택한 게임의 Reborn 한글패치 백업이 아닙니다.'}
     $ops=@()
     foreach($r in $b.Files){
-        $matches=@($manifest.Files | Where-Object {$_.Scope -eq $r.Scope -and $_.Path -eq $r.Path -and $_.AfterHash -eq $r.AfterHash -and $_.BeforeHash -eq $r.BeforeHash})
+        $matches=@($manifest.Files | Where-Object {Test-Backup-Transition $_ $r})
         if($matches.Count -ne 1){throw '복원 대상이 배포 기록과 다릅니다.'}
         $target=Get-Target $r;$source=$null
         if($r.BeforeHash){$source=Safe-Path $backupRoot $r.Backup;if((Get-Hash $source) -ne $r.BeforeHash){throw ('백업 파일이 손상됐습니다: '+$r.Path)}}
         $current=Current-Hash $target
-        if($current -eq $r.BeforeHash){continue}
+        if($current -eq $r.BeforeHash -or $current -eq $matches[0].BeforeHash){continue}
         if($current -ne $r.AfterHash){throw ('설치 뒤 변경된 파일은 덮어쓰지 않습니다: '+$r.Path)}
         $ops+=[PSCustomObject]@{Target=$target;BeforeHash=$current;AfterHash=$r.BeforeHash;Staged=$source;Rollback=$null}
     }
@@ -151,9 +167,10 @@ $checks=@();$already=0
 foreach($r in $manifest.Files){
     $target=Get-Target $r;$hash=Current-Hash $target
     if($hash -eq $r.AfterHash){$already++;continue}
-    if($hash -ne $r.BeforeHash){throw ('지원하지 않는 파일 상태입니다. 다른 판본이나 다른 수정본은 덮어쓰지 않습니다: '+$r.Path)}
+    $upgrade=$null
+    if($hash -ne $r.BeforeHash){$upgrade=Get-Upgrade $r $hash;if(!$upgrade){throw ('지원하지 않는 파일 상태입니다. 다른 판본이나 다른 수정본은 덮어쓰지 않습니다: '+$r.Path)}}
     if($hash -and ((Get-Item -LiteralPath $target).Attributes -band [IO.FileAttributes]::ReadOnly)){throw ('읽기 전용 파일입니다: '+$r.Path)}
-    $checks+=[PSCustomObject]@{Record=$r;Target=$target}
+    $checks+=[PSCustomObject]@{Record=$r;Target=$target;SourceHash=$hash;DeltaPath=$(if($upgrade){$upgrade.Delta}else{$r.Delta})}
 }
 Write-Host ("판본 검사 완료: 적용할 파일 {0}개 / 이미 적용된 파일 {1}개" -f $checks.Count,$already)
 if($Mode -eq 'Check'){Write-Host '검사만 완료했습니다. 파일은 변경하지 않았습니다.';return}
@@ -163,12 +180,12 @@ $backupRoot=Safe-Path $GamePath ('Melo_Reborn_KO_Backups/'+$id);[IO.Directory]::
 $ops=@();$saved=@();$i=0
 foreach($c in $checks){
     $r=$c.Record;$save=$null;$relative=$null
-    if($r.BeforeHash){$relative='original/'+$r.Scope+'/'+$r.Path;$save=Safe-Path $backupRoot $relative;[IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($save)) | Out-Null;[IO.File]::Copy($c.Target,$save,$false);if((Get-Hash $save) -ne $r.BeforeHash){throw ('백업 검증 실패: '+$r.Path)}}
+    if($c.SourceHash){$relative='original/'+$r.Scope+'/'+$r.Path;$save=Safe-Path $backupRoot $relative;[IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($save)) | Out-Null;[IO.File]::Copy($c.Target,$save,$false);if((Get-Hash $save) -ne $c.SourceHash){throw ('백업 검증 실패: '+$r.Path)}}
     $staged=Safe-Path $backupRoot ('staged/'+$i+'.bin');[IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($staged)) | Out-Null;$i++
-    [MeloRebornDelta]::Expand($save,(Safe-Path $PSScriptRoot $r.Delta),$staged,[int]$r.AfterBytes)
+    [MeloRebornDelta]::Expand($save,(Safe-Path $PSScriptRoot $c.DeltaPath),$staged,[int]$r.AfterBytes)
     if((Get-Hash $staged) -ne $r.AfterHash){throw ('생성한 패치 파일 검증 실패: '+$r.Path)}
-    $ops+=[PSCustomObject]@{Target=$c.Target;Staged=$staged;BeforeHash=$r.BeforeHash;AfterHash=$r.AfterHash;Rollback=$save}
-    $saved+=[PSCustomObject]@{Scope=$r.Scope;Path=$r.Path;Backup=$relative;BeforeHash=$r.BeforeHash;AfterHash=$r.AfterHash}
+    $ops+=[PSCustomObject]@{Target=$c.Target;Staged=$staged;BeforeHash=$c.SourceHash;AfterHash=$r.AfterHash;Rollback=$save}
+    $saved+=[PSCustomObject]@{Scope=$r.Scope;Path=$r.Path;Backup=$relative;BeforeHash=$c.SourceHash;AfterHash=$r.AfterHash}
 }
 $record=[PSCustomObject]@{Format='Melo-Reborn-backup-1';PackageId=$manifest.PackageId;Version=$manifest.Version;GamePath=$GamePath;XeniaPath=$XeniaPath;Status='Prepared';Files=$saved}
 $backupJson=Safe-Path $backupRoot 'backup.json';Write-Json $backupJson $record
