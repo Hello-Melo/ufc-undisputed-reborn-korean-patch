@@ -87,7 +87,7 @@ function Hash-Bytes([byte[]]$Bytes) {
     $a=[Security.Cryptography.SHA256]::Create()
     try {return [BitConverter]::ToString($a.ComputeHash($Bytes)).Replace('-','').ToLowerInvariant()} finally {$a.Dispose()}
 }
-function Thumbnail-Config([byte[]]$Bytes) {
+function Thumbnail-Config([byte[]]$Bytes,[ValidateSet('fast','full')][string]$ReadbackMode='fast') {
     $utf8=New-Object Text.UTF8Encoding($false,$true)
     $bom=($Bytes.Length -ge 3 -and $Bytes[0] -eq 239 -and $Bytes[1] -eq 187 -and $Bytes[2] -eq 191)
     $offset=0;if($bom){$offset=3}
@@ -106,16 +106,16 @@ function Thumbnail-Config([byte[]]$Bytes) {
             $key=$keys[0]
             $parsed=[regex]::Match($key.Value,'^(?<prefix>[ \t]*readback_resolve[ \t]*=[ \t]*)["''](?<mode>none|fast|full)["''](?<tail>[ \t]*(?:#.*)?)$')
             if(!$parsed.Success){throw '게임별 readback_resolve 값은 none, fast, full 문자열이어야 합니다.'}
-            if($parsed.Groups['mode'].Value -eq 'full'){return ,$Bytes}
-            $replacement=$parsed.Groups['prefix'].Value+'"full"'+$parsed.Groups['tail'].Value
+            if($parsed.Groups['mode'].Value -eq $ReadbackMode){return ,$Bytes}
+            $replacement=$parsed.Groups['prefix'].Value+'"'+$ReadbackMode+'"'+$parsed.Groups['tail'].Value
             $absolute=$start+$key.Index;$value=$value.Substring(0,$absolute)+$replacement+$value.Substring($absolute+$key.Length)
         }else{
             $prefix=$value.Substring(0,$end);if(!$prefix.EndsWith("`n")){$prefix+=$newline}
-            $value=$prefix+'readback_resolve = "full"'+$newline+$value.Substring($end)
+            $value=$prefix+('readback_resolve = "'+$ReadbackMode+'"')+$newline+$value.Substring($end)
         }
     }else{
         if($value.Length -and !$value.EndsWith("`n")){$value+=$newline}
-        $value+='[GPU]'+$newline+'readback_resolve = "full"'+$newline
+        $value+='[GPU]'+$newline+('readback_resolve = "'+$ReadbackMode+'"')+$newline
     }
     $out=$utf8.GetBytes($value);if($bom){$out=[byte[]](@(239,187,191)+$out)}
     return ,$out
@@ -156,7 +156,7 @@ function Commit-Changes($Operations) {
 $manifest=Read-Json (Join-Path $PSScriptRoot 'manifest.json')
 if($manifest.Format -ne 'Melo-Reborn-XOR-1' -or $manifest.Game -ne 'Undisputed Reborn 1.1'){throw 'Reborn 전용 배포 형식이 아닙니다.'}
 $configRule=$manifest.Configuration
-if(!$configRule -or $configRule.Scope -ne 'xenia-config' -or $configRule.Path -ne 'config/5451087D.config.toml' -or $configRule.Setting -ne 'GPU.readback_resolve' -or $configRule.Value -ne 'full'){throw '이미지 저장용 설정 기록이 올바르지 않습니다.'}
+if(!$configRule -or $configRule.Scope -ne 'xenia-config' -or $configRule.Path -ne 'config/5451087D.config.toml' -or $configRule.Setting -ne 'GPU.readback_resolve' -or $configRule.Value -ne 'fast'){throw '이미지 저장용 설정 기록이 올바르지 않습니다.'}
 $addonPaths=@('patches/5451087D - Melo Korean Fighter Name Pipeline.patch.toml','patches/5451087D - Melo Korean Font Memory.patch.toml')
 foreach($f in $manifest.RuntimeFiles){if((Get-Hash (Safe-Path $PSScriptRoot $f.Path)) -ne $f.Hash){throw ('설치 도구가 손상됐습니다: '+$f.Path)}}
 foreach($r in $manifest.Files){
@@ -197,7 +197,8 @@ if($Mode -eq 'Restore'){
         if($isConfig){
             [byte[]]$original=@();if($source){$original=[IO.File]::ReadAllBytes($source)}
             [byte[]]$expected=Thumbnail-Config $original
-            if((Hash-Bytes $expected) -ne $r.AfterHash){throw '백업의 이미지 설정 변경 기록이 올바르지 않습니다.'}
+            [byte[]]$legacyExpected=Thumbnail-Config $original -ReadbackMode 'full'
+            if((Hash-Bytes $expected) -ne $r.AfterHash -and (Hash-Bytes $legacyExpected) -ne $r.AfterHash){throw '백업의 이미지 설정 변경 기록이 올바르지 않습니다.'}
         }
         $current=Current-Hash $target
         if($current -eq $r.BeforeHash -or (!$isConfig -and $current -eq $matches[0].BeforeHash)){continue}

@@ -7,7 +7,7 @@
   "TitleId": "5451087D",
   "TestedXenia": "canary_experimental@5d4dc8a88",
   "BaselinePhase": "normal-trial-thumbnail-readback-v10",
-  "Build": "20261111",
+  "Build": "20261111-fast",
   "SupportedPreviousVersions": [
     "1.0-beta",
     "1.01"
@@ -16,7 +16,11 @@
     "Scope": "xenia-config",
     "Path": "config/5451087D.config.toml",
     "Setting": "GPU.readback_resolve",
-    "Value": "full"
+    "Value": "fast",
+    "SupportedRestoreValues": [
+      "fast",
+      "full"
+    ]
   },
   "BaseFiles": [
     {
@@ -492,7 +496,7 @@
   "RuntimeFiles": [
     {
       "Path": "patcher.ps1",
-      "Hash": "d97a609394cabf4eadccea882965446776963298a047789cda2c7b0f8d7d5cbf"
+      "Hash": "68177ca4a2cba0d0f1efdcbfab79cc66a943b758078d5188cf800dc2ecbaa285"
     },
     {
       "Path": "lib/MeloRebornDelta.cs",
